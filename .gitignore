@@ -11,3 +11,6 @@ wheels/
 
 # mypy cache
 .mypy_cache/
+
+# PDF of the book
+Foster*.pdf
