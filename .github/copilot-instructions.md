@@ -16,13 +16,6 @@ Ce projet est un tutoriel complet sur les modèles de diffusion en intelligence 
 - `.venv/`: Environnement virtuel géré par uv
 - `pyproject.toml`: Configuration et dépendances du projet
 
-## Statut du Projet
-
-✅ Toutes les étapes de configuration sont terminées
-✅ Jupyter Notebook est accessible à http://localhost:8888
-✅ Les dépendances sont installées et fonctionnelles
-✅ Le code de test fonctionne correctement
-
 ## Utilisation
 
 Pour travailler sur ce projet :
