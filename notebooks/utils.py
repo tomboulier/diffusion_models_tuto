@@ -9,11 +9,14 @@ def sample_batch(dataset):
 
 
 def display(
-    images, n=10, size=(20, 3), cmap="gray_r", as_type="float32", save_to=None
+    images, n=10, size=(20, 3), cmap="gray", as_type="float32", save_to=None
 ):
     """
     Displays n random images from each one of the supplied arrays.
     """
+    # if less than n images, display all
+    n = min(n, images.shape[0])
+    
     if images.max() > 1.0:
         images = images / 255.0
     elif images.min() < 0.0:
