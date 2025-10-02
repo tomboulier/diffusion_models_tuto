@@ -35,8 +35,6 @@ class KaggleRSNAICHDataset:
             for image_id in tqdm(download_ids, desc="Downloading DICOM files"):
                 self.download(image_id)
 
-        return self
-
     def get_listing(self) -> pl.DataFrame:
         """
         Returns the list of IDs and labels provided by the competition.
@@ -51,12 +49,11 @@ class KaggleRSNAICHDataset:
             return train_dataset_listing
         except FileNotFoundError:
             raise FileNotFoundError(
-                f"CSV file not found in {self.data_path}. "
+                f"File 'stage_2_train.csv' not found in {self.data_path}. "
                 f"Please ensure the dataset is downloaded and placed correctly.\n"
-                f"You can download the file 'stage_2_train.csv' from the Kaggle competition page: "
+                f"You can download the file from the Kaggle competition page: "
                 f"https://www.kaggle.com/competitions/rsna-intracranial-hemorrhage-detection/data \n"
                 f"Then, the file should be placed in the directory: {Path(self.data_path).resolve()}"
-
             )
 
     def get_ids(self) -> list[str]:
@@ -84,9 +81,18 @@ class KaggleRSNAICHDataset:
                 "-p", self.data_path,
             ]
         try:
-            subprocess.run(command,
-                           check=True,
-                           stdout=subprocess.DEVNULL,  # Suppress Kaggle's own progress bar output
-                           stderr=subprocess.DEVNULL)
+            subprocess.run(
+            command,
+            check=True,
+            capture_output=True,
+            text=True
+            )
         except subprocess.CalledProcessError as e:
-            raise DownloadError(f"Error downloading {image_id}: {e}")
+            msg = (
+                f"❌ Failed to download {image_id}\n"
+                f"Command: {' '.join(command)}\n"
+                f"Exit code: {e.returncode}\n"
+                f"stderr:\n{e.stderr.strip()}\n"
+                f"stdout:\n{e.stdout.strip()}"
+            )
+            raise DownloadError(msg) from e
